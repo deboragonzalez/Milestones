@@ -1,0 +1,43 @@
+---
+title: 'Milestone #2'
+author: "Debi Gonzalez"
+date: "2/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(haven)
+library(janitor)
+
+```
+
+
+```{r data loading, echo = FALSE}
+
+# I downloaded the zip file containing 4 stata data files, one codebook, two R
+# scripts, and 5 ".do" files containing code that I am still trying to
+# understand. I manually extracted the data from the zip file into a folder
+# inside my repo with the same name ("dataverse_files"). Inside that folder is
+# another folder and a readme type of document. Inside this second folder is the
+# list of files I previously mentioned.
+
+county_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/CountyData.dta") 
+
+hispanic_changes <- read_dta("dataverse_files/HHHDemogThreatRepArchive/CountyHispanicChanges.dta")
+
+geo_scope <- read_dta("dataverse_files/HHHDemogThreatRepArchive/GeographicScopeData.dta")
+  
+precinct_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/PrecinctData.dta")
+
+# Given the 
+```
+
+
+```{r}
+precinct_data %>% 
+  group_by(st) %>% 
+  summarize(voters = sum(Total_Voters_2016_Prct))
+```
+
