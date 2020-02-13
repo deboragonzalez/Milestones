@@ -31,11 +31,16 @@ geo_scope <- read_dta("dataverse_files/HHHDemogThreatRepArchive/GeographicScopeD
   
 precinct_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/PrecinctData.dta")
 
-# Given the 
+# Given the stata data files, I used read_dta from the haven library to read in
+# each data file.
 ```
 
 
-```{r}
+```{r testing data}
+
+# As the second largest dataset in my list, I decided to start with the precinct
+# level data and test out some simple data narrowing/cleaning commands.
+
 precinct_data %>% 
   group_by(st) %>% 
   summarize(voters = sum(Total_Voters_2016_Prct))
