@@ -10,18 +10,19 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(haven)
 library(janitor)
+library(gt)
 
 ```
 
 
-```{r data loading, echo = FALSE}
+```{r data loading}
 
-# I downloaded the zip file containing 4 stata data files, one codebook, two R
-# scripts, and 5 ".do" files containing code that I am still trying to
-# understand. I manually extracted the data from the zip file into a folder
-# inside my repo with the same name ("dataverse_files"). Inside that folder is
-# another folder and a readme type of document. Inside this second folder is the
-# list of files I previously mentioned.
+# I downloaded the zip file containing 4 stata data files, one codebook (with
+# defined variables), two R scripts, and 5 ".do" files of code that I am still
+# trying to understand. I manually extracted the data from the zip file into a
+# folder inside my repo with the same name ("dataverse_files"). Inside that
+# folder is another folder and a readme type of document. Inside this second
+# folder is the list of files I previously mentioned.
 
 county_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/CountyData.dta") 
 
@@ -32,7 +33,9 @@ geo_scope <- read_dta("dataverse_files/HHHDemogThreatRepArchive/GeographicScopeD
 precinct_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/PrecinctData.dta")
 
 # Given the stata data files, I used read_dta from the haven library to read in
-# each data file.
+# each data file. I intended to clean the names, but it appears they already are
+# clean. A lot of the variables appear to be proportions (% change) of changes
+# to the raw numbers of different variables.
 ```
 
 
@@ -43,6 +46,37 @@ precinct_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/PrecinctData
 
 precinct_data %>% 
   group_by(st) %>% 
-  summarize(voters = sum(Total_Voters_2016_Prct))
+  summarize(voters = sum(Total_Voters_2016_Prct)) %>%
+  filter(! is.na(voters)) %>% 
+  gt() %>% 
+  tab_header(title = "Number of Voters by State") %>%
+    cols_label(st = "State",
+               voters = "Number of Voters") %>% 
+  tab_source_note("Source: HHH Demographic Threat Data Archive: Precinct")
+
+# I created a GT table summarizing the total number of voters in each of the
+# States analized. The code is simple, but ensures my data is workable and helps
+# me gain an understanding of what I'm working with.
+
+```
+
+
+```{r}
+
+# I also tried carrying out these steps with another one of the datasets.
+# Interestingly, the number of voters per state differs from this dataset to the
+# other. This is certainly something I need to look into.
+
+geo_scope %>%
+  group_by(st) %>% 
+  summarize(voters = sum(Total_Voters_2016_Prct)) %>%
+  filter(! is.na(voters)) %>% 
+  gt() %>% 
+  tab_header(title = "Number of Voters by State") %>%
+    cols_label(st = "State",
+               voters = "Number of Voters") %>% 
+  tab_source_note("Source: HHH Demographic Threat Data Archive: Geo Scope")
+  
+  
 ```
 
