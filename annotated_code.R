@@ -10,10 +10,18 @@ rm(list=ls())
 if (.Platform$OS == "windows") {
   # Set working directory in location of script.
   .doit <- function() { # only works with R.exe; trap errors if using Rscript.exe
-    f_f <- lapply(sys.frames(),function(x) x$ofile);f_f <- Filter(Negate(is.null),f_f) ; PTH <- dirname(f_f[[length(f_f)]]); setwd(PTH) ; rm(PTH,f_f)
+    f_f <- lapply(sys.frames(),function(x) x$ofile);
+    f_f <- Filter(Negate(is.null),f_f) ; 
+    PTH <- dirname(f_f[[length(f_f)]]); setwd(PTH) ; rm(PTH,f_f)
   }
   try(.doit(),silent=T)
 }
+
+# I think the first part of this code is setting up the computer and the working
+# environment. I'm not sure what function x or x$ofile is, but it appears it is
+# meant to be done in "silence" given the silent = TRUE. May need to look at
+# this part with Preceptor and Alice to ensure I know what exactly it is doing.
+
 if (!"bit64" %in% installed.packages()[, 1]) {
   install.packages("bit64")
 }
@@ -27,10 +35,16 @@ library(RColorBrewer)
 palette(brewer.pal(n=9,name="Set1")[c(1:5,7:9)]) # reset default colors
 options(digits=4)
 
-#
-# Simple scatter plots of change in GOP share on change
-# in Hispanic population, variously measured.
-#
+
+# This short loop indicated that if the libraries mentioned are not already in
+# installed packagers, then it should install them. Then, it loads the libraries
+# necessary for the data analysis.
+-----
+  
+  
+# Scatter plots of change in GOP share on change in Hispanic population,
+# variously measured.
+
 
 # Outsheeted from AnalyzePooledPrecintLevelFiles.do
 DT = fread("Figure01DataForR.csv")
@@ -49,10 +63,17 @@ DT = fread("Figure01DataForR.csv")
   lines(loess.smooth(y=y,x=x,span=.2),lwd=3,col=3)
 }
 
+# This is not our typical gov1005 kind of plot making, however, bringing a data
+# file from stata, the authors create a function, indicate the sample they want,
+# plot the function, and then edit the aesthetics of the grid and points.
+
 int.90 <- function(x) {
   # Return boolean for data in the interior 90% of data.
   x <= quantile(x,.95,na.rm=T) & x >= quantile(x,.05,na.rm=T)
 }
+
+# This part finds the 90% confidence interval. They created a function to output
+# the 90% interval
 
 fname = "Figure01-BaseScatters"
 pdf(sprintf("Figures/%s.pdf",fname),width=9,height=6)
@@ -187,7 +208,10 @@ rm(list=ls())
 if (.Platform$OS == "windows") {
   # Set working directory in location of script.
   .doit <- function() { # only works with R.exe; trap errors if using Rscript.exe
-    f_f <- lapply(sys.frames(),function(x) x$ofile);f_f <- Filter(Negate(is.null),f_f) ; PTH <- dirname(f_f[[length(f_f)]]); setwd(PTH) ; rm(PTH,f_f)
+    f_f <- lapply(sys.frames(), function(x) x$ofile);
+    f_f <- Filter(Negate(is.null),f_f) ; 
+    PTH <- dirname(f_f[[length(f_f)]]); 
+    setwd(PTH) ; rm(PTH,f_f)
   }
   try(.doit(),silent=T)
 }
@@ -195,10 +219,14 @@ if (.Platform$OS == "windows") {
 library(xtable)
 library(haven)
 
+# This part begins the second file with additional computer and R setup.
 
 dta <- read_dta("PrecinctData.dta")
 
 colnames(dta) <- gsub("_", ".", colnames(dta))
+
+# The data for precincts studied is loaded (from stata?) and the column names
+# are changed for ease of use.
 
 
 ### make table of census descriptive stats ----
@@ -217,6 +245,10 @@ for(i in 1:length(cn)) {
   rmat[i, 7] <- mean(dta[dta$st == "WA", cn[i]][[1]], na.rm = T)
 }
 
+# This is a loop and it appears to be creating a table of the average key census
+# stats per state. I did not find this chart in the published reading, but it
+# may be in the appendix, which for some reason was not included in the PDF I
+# got from Hollis. I'm a bit unclear on how 'cn' got made and what it represents. 
 
 rownames(rmat) <- c("Has BA or More `16", "Non-white, Non-Hisp. `16", 
                     "Hispanic `11", "Non-Cit. For. Born. `11", 
@@ -238,3 +270,5 @@ sink()
 sink("Tables/DescriptiveStatisticsMeansByState.txt")
 print(round(rmat, 2))
 sink()
+
+#  This two small chunks appear to be two distinct formats for printing 
