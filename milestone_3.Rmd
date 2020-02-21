@@ -1,0 +1,14 @@
+---
+title: 'Milestone #3'
+author: "Debi Gonzalez"
+date: "2/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Submit a one paragraph html to Canvas which summarizes, in your own words, your paper. 
+
+Include the url of your repo so we can check it out, if we choose to. In the repo, you must include a copy of the code of the original paper, interspersed with several pages of your own comments, and reformatted to meet our coding style guidelines. 
