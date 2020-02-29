@@ -1,0 +1,57 @@
+---
+title: 'Milestone #4: A Replication Exercise Test Run'
+author: "Debora Gonzalez"
+date: "2/28/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(haven)
+library(tinytex)
+library(stargazer)
+library(gt)
+```
+
+```{r data, echo = FALSE}
+
+county_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/CountyData.dta") 
+
+hispanic_changes <- read_dta("dataverse_files/HHHDemogThreatRepArchive/CountyHispanicChanges.dta")
+
+geo_scope <- read_dta("dataverse_files/HHHDemogThreatRepArchive/GeographicScopeData.dta")
+  
+precinct_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/PrecinctData.dta")
+
+```
+
+
+# Research Paper: 
+Local demographic changes and US presidential voting, 2012 to 2016
+
+# Authors:
+Seth J. Hilla, Daniel J. Hopkins, and Gregory A. Huberc
+
+# Overview:
+The topics of immigration and the increase of racial and ethnic minorities have been fairly prevalent in media, social media, and political rhetoric over the last few years, but do these phenomena actually influence voting behavior? This study analyzes voting patterns in areas that received an influx of immigrants prior to the 2016 general election. Notably, using precinct-level data, it finds that these influxes did not influence voting behavior in favor of Trump, but rather (in a slight way) benefited his opponent in those particular areas. In other words, local demographic changes are not, on their own, increasing support for anti-immigration candidates. The authors argue that this means the cities in question are not engaging in the often suggested “threatened response” associated with voting behavior in light of immigration influxes. The authors acknowledge that "despite its disparate local impacts, immigration may be a symbolic, nationalized issue whose effects, do not depend on local experiences." However, the actual connection has yet to be proven empirically and it is tough to do so given several factors influencing voting patterns. Some of these factors include, but are not limited to, greater exposure to international trade and declining economic prospects for the less educated. The authors explain that 'positive intergroup contact' could be responsible for the seemingly 'supportive' voting patterns at low levels of aggregation (locally). The authors study change in proportion of Hispanics and proportion change of Hispanic proportions concluding that in places with demographic shifts, Trump did not benefit, but, in fact, Clinton did. These findings are further validated by a similar model utilizing foreign-born, noncitizens proportions to discard the posibility of increased Clinton support due to changing electoral composition (given that noncitizens cannot vote and would not influence the electoral outcome in such way). I am interested in exploring this topic further by analyzing the variables used and figuring out whether this conclusion stands across demographic groups. In addition, this paper evokes an interest in understanding how Trump’s nationalist rhetoric and media’s portrayal of immigration influxes may have attracted different demographic groups in cities that did not experience such influx (fearing that they might) i.e. the Deep South. 
+
+Dan Hopkins offers a link to the data for this research paper on [his website](http://web.sas.upenn.edu/danhop/research/">his website). The full paper can be found [here](https://www-pnas-org.ezp-prod1.hul.harvard.edu/content/pnas/116/50/25023.full.pdf). Check out [my project's Github repo](https://github.com/deboragonzalez/Milestones").
+
+
+
+# A GT Table of my Data
+
+```{r}
+precinct_data %>% 
+  group_by(st) %>% 
+  summarize(voters = sum(Total_Voters_2016_Prct)) %>%
+  filter(! is.na(voters)) %>% 
+  gt() %>% 
+  tab_header(title = "Number of Voters by State") %>%
+    cols_label(st = "State",
+               voters = "Number of Voters") %>% 
+  tab_source_note("Source: HHH Demographic Threat Data Archive: Precinct")
+```
+
+	regress gop_propvote_change `iv_c_1610' `cv_c_1610' `cv_l_1610' [aweight=weight]
