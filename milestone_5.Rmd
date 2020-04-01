@@ -10,13 +10,13 @@ biblio-style: "apalike"
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
-library(tidyverse)
 library(haven)
 library(tinytex)
 library(stargazer)
-library(gt)
 library(ggplot2)
 library(ggthemes)
+library(tidyverse)
+library(gt)
 library(broom)
 ```
 
@@ -269,6 +269,21 @@ m4 <-  lm(gop_propvote_change ~  dprop1611_hispanic + l11_hispanic + d1611_poor 
 
 # Regression Model 5:
 
+
+
+
+
+# Regression Model 6:
+
+
+
+
+# Regression Model 7:
+
+
+
+
+# Regression Model 8:
 
 # The variable definitions from 02_AnalyzePooledPrecinctLevelFiles.do  
 
