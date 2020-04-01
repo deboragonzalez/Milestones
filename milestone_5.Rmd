@@ -1,0 +1,181 @@
+---
+title: 'Milestone #5: A Dive into My Replication Analysis'
+author: "Debi Gonzalez"
+date: "3/30/2020"
+output: bookdown::pdf_document2
+bibliography: references.bib
+biblio-style: "apalike"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(haven)
+library(tinytex)
+library(stargazer)
+library(gt)
+library(ggplot2)
+library(ggthemes)
+```
+
+
+```{r data setup}
+
+county_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/CountyData.dta") 
+
+hispanic_changes <- read_dta("dataverse_files/HHHDemogThreatRepArchive/CountyHispanicChanges.dta")
+
+geo_scope <- read_dta("dataverse_files/HHHDemogThreatRepArchive/GeographicScopeData.dta")
+  
+precinct_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/PrecinctData.dta")
+
+```
+
+\newpage
+# Introduction
+
+Research Paper: Local demographic changes and US presidential voting, 2012 to 2016
+
+Authors: Seth J. Hilla, Daniel J. Hopkins, and Gregory A. Huberc
+
+Thi PDF document present an initial overview of the replication exercise through a high-level visual presentation and a textual overview of the authors' findings and methods.
+
+# Overview
+The topics of immigration and the increase of racial and ethnic minorities have been fairly prevalent in media, social media, and political rhetoric over the last few years, but do these phenomena actually influence voting behavior? This study analyzes voting patterns in areas that received an influx of immigrants prior to the 2016 general election. Notably, using precinct-level data, it finds that these influxes did not influence voting behavior in favor of Trump, but rather (in a slight way) benefited his opponent in those particular areas. In other words, local demographic changes are not, on their own, increasing support for anti-immigration candidates. The authors argue that this means the cities in question are not engaging in the often suggested “threatened response” associated with voting behavior in light of immigration influxes. The authors acknowledge that "despite its disparate local impacts, immigration may be a symbolic, nationalized issue whose effects, do not depend on local experiences." However, the actual connection has yet to be proven empirically and it is tough to do so given several factors influencing voting patterns. Some of these factors include, but are not limited to, greater exposure to international trade and declining economic prospects for the less educated. The authors explain that 'positive intergroup contact' could be responsible for the seemingly 'supportive' voting patterns at low levels of aggregation (locally). The authors study change in proportion of Hispanics and proportion change of Hispanic proportions concluding that in places with demographic shifts, Trump did not benefit, but, in fact, Clinton did. These findings are further validated by a similar model utilizing foreign-born, noncitizens proportions to discard the posibility of increased Clinton support due to changing electoral composition (given that noncitizens cannot vote and would not influence the electoral outcome in such way) [@research]. I am interested in exploring this topic further by analyzing the variables used and figuring out whether this conclusion stands across demographic groups. In addition, this paper evokes an interest in understanding how Trump’s nationalist rhetoric and media’s portrayal of immigration influxes may have attracted different demographic groups in cities that did not experience such influx (fearing that they might) i.e. the Deep South. 
+
+Dan Hopkins offers a link to the data for this research paper on [his website](http://web.sas.upenn.edu/danhop/research/">his website). The full paper can be found [here](https://www-pnas-org.ezp-prod1.hul.harvard.edu/content/pnas/116/50/25023.full.pdf). For more information about this project please visit my project's Github repo^[[All analysis for this paper is available here.](https://github.com/deboragonzalez/Milestones)].
+
+
+Research on the United Kingdom has found that support for Brexit, the UK Independence Party, and reducing immigration are higher in localities that have low immigrant shares but recent demographic changes (21–23), with related research in continental Europe (24, 25).
+
+
+
+\newpage
+
+# A GT Table of my Data
+
+```{r table, echo=FALSE}
+
+# This table shows the average change in proportion of foreign-born individuals
+# and of republican voters respectively. I take the proportion (adding it
+# together while grouped by state), divide it by length of that variable to find
+# the average prop change per state, and multiply it by 100 to get the
+# percentage.
+
+precinct_data %>% 
+  group_by(st) %>% 
+  summarize(avg_foreign_pop_change = round(sum(d1611_foreign)/length(d1611_foreign)*100, 3),
+         avg_rep_pop_change = round(sum(gop_propvote_change)/length(gop_propvote_change)*100, 3)) %>%
+  select(st, avg_foreign_pop_change, avg_rep_pop_change) %>% 
+#  filter(! is.na(avg_foreign_pop_change)) %>% 
+  gt() %>% 
+  tab_header(title = "Average Changes in Proportion of Population Groups by State",
+             subtitle = "Proportion of foreign born and GOP voters respectively between 2011-2016") %>%
+  cols_label(st = "State",
+             avg_foreign_pop_change = "Avg. Change in Foreign Pop.",
+             avg_rep_pop_change = "Avg. Change in Republican Voters") %>% 
+  tab_source_note("Source: HHH Demographic Threat Data Archive: Precinct")
+```
+
+
+\newpage
+
+# A Beautiful Graphic
+
+
+
+```{r graphic, warning = FALSE}
+
+# This graphic is an initial attempt to replicate Fig. 1A from the paper:
+
+# Change in Republican vote share, 2012 to 2016, and change in Hispanic
+# population 2011-2016. Note: Points are random samples of 2,000 precincts.
+# Loess lines are generated from all observations. Points are shaded
+# corresponding to density, with darker colors indicating more precincts.
+
+# My graphic complies with the first two lines of that description. I am using
+# the sample function to get a random sample from my geo_scope dataset. I used
+# the geoscope dataset because I wanted to color the dots by state, which the
+# authors do not do, but I thought would be interesting and prettier. I was able to create the loess line using geom_smooth
+
+geo_scope2 <- geo_scope %>% 
+  drop_na()
+
+try2 <- sample_n(geo_scope2, 2000)
+  
+# With every sample ran a different number of non-finite/missing values exists,
+# and a warning sign appears. Because these values are not relevant to the
+# graphic I'm constructing, I will ignore this warnings.
+
+
+
+try2 %>% 
+  ggplot(aes(x = gop_propvote_change, y = d1611_hispanic, size = Total_Voters_2016_Prct)) + 
+  geom_point(aes(color = st), alpha = 0.5) +
+  stat_smooth(method = "loess", formula = y ~ x, size = 1, se = FALSE) +
+  xlim(-.3,.3) +
+  labs(title = "Republican Vote Share Change vs. Hispanic Population Share Change",
+       subtitle = "How changes in hispanic population share from 2011 to 2016 relate \nto changes in GOP Votes share from the 2012 to the 2016 election", caption = "Source: HHH Demographic Threat Data Archive: Geo_Scope",
+       x = expression(Delta*" Republican Vote Share 2012-2016"),
+       y = expression(Delta*" Hispanic Population Share 2011-2016"),
+       size = "Number of Voters \nby Preccint in 2016",
+       color = "State") + 
+  theme_classic()
+ 
+  
+```
+
+
+This graph .... [@ggplot] Using ... [@data] ... [@smooth]
+
+```{r playing around with the data, include = FALSE}
+
+try <- geo_scope %>% 
+  filter(st %in% c("FL", "OH", "WA", "PA", "MI")) %>% 
+  group_by(st) %>%
+  drop_na() %>% 
+  mutate(state_gop_propvote_change = mean(gop_propvote_change),
+         state_d1611_hispanic = mean(d1611_hispanic),
+         state_pop12 = sum(weight),
+         state_pop16 = sum(Total_Voters_2016_Prct))
+
+
+new_data <- inner_join(county_data, geo_scope, by = "stcofips") %>% 
+  filter(st %in% c("FL", "OH", "WA", "PA", "MI")) %>% 
+  group_by(st)
+
+
+new_data %>% 
+  ggplot(aes(x = l10_hispanic, y = l10_foreign, size = CTTOTPOP16_WGT, fill = st)) + 
+    geom_jitter(alpha = 0.5) +
+    xlim(0, 0.7) +
+    ylim(0, 0.3) +
+  labs()
+  
+
+  ggplot(new_data, mapping = aes(x = l10_hispanic, y = l10_foreign, size = CTTOTPOP16_WGT, colour = st)) + 
+    geom_point(alpha = 1/10)
+  
+  ggplot(new_data, mapping = aes(x = l00_hispanic.x, y = l00_foreign.x, size = CTTOTPOP16_WGT)) + 
+    geom_point(alpha = 0.5)
+
+```
+
+\newpage
+# Appendix 
+
+### Table Replication
+An Appendix which include a replication of at least one of the tables from your paper. (It can be a simple summary table.) Also, take a screen shot of the original table and include that image in your Appendix. We want to see how closely your results match the original paper’s.
+
+```{r}
+
+```
+
+
+
+### Original Table
+
+\newpage
+# References
+
+
