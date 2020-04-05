@@ -2,13 +2,17 @@
 title: 'Milestone #5: A Dive into My Replication Analysis'
 author: "Debi Gonzalez"
 date: "3/30/2020"
-output: bookdown::pdf_document2
+output: 
+  pdf_document:
+    extra_dependencies: ["rotating"]
 bibliography: references.bib
 biblio-style: "apalike"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+options(tinytex.verbose = TRUE)
+
 
 library(haven)
 library(tinytex)
@@ -46,7 +50,7 @@ Thi PDF document present an initial overview of the replication exercise through
 The topics of immigration and the increase of racial and ethnic minorities have been fairly prevalent in media, social media, and political rhetoric over the last few years, but do these phenomena actually influence voting behavior? This study analyzes voting patterns in areas that received an influx of immigrants prior to the 2016 general election. Notably, using precinct-level data, it finds that these influxes did not influence voting behavior in favor of Trump, but rather (in a slight way) benefited his opponent in those particular areas. In other words, local demographic changes are not, on their own, increasing support for anti-immigration candidates. The authors argue that this means the cities in question are not engaging in the often suggested “threatened response” associated with voting behavior in light of immigration influxes. The authors acknowledge that "despite its disparate local impacts, immigration may be a symbolic, nationalized issue whose effects, do not depend on local experiences." However, the actual connection has yet to be proven empirically and it is tough to do so given several factors influencing voting patterns. Some of these factors include, but are not limited to, greater exposure to international trade and declining economic prospects for the less educated. The authors explain that 'positive intergroup contact' could be responsible for the seemingly 'supportive' voting patterns at low levels of aggregation (locally). 
 
 
-The authors study change in proportion of Hispanics and proportion change of Hispanic proportions concluding that in places with demographic shifts, Trump did not benefit, but, in fact, Clinton did. These findings are further validated by a similar model utilizing foreign-born, noncitizens proportions to discard the posibility of increased Clinton support due to changing electoral composition (given that noncitizens cannot vote and would not influence the electoral outcome in such way) [@research]. I am interested in exploring this topic further by analyzing the variables used and figuring out whether this conclusion stands across demographic groups. In addition, this paper evokes an interest in understanding how Trump’s nationalist rhetoric and media’s portrayal of immigration influxes may have attracted different demographic groups in cities that did not experience such influx (fearing that they might) i.e. the Deep South. 
+The authors use 8 main regression models as well as loess lines in their analysis. They study change in proportion of Hispanics and proportion change of Hispanic proportions concluding that in places with demographic shifts, Trump did not benefit, but, in fact, Clinton did. These findings are further validated by a similar model utilizing foreign-born, noncitizens proportions to discard the posibility of increased Clinton support due to changing electoral composition (given that noncitizens cannot vote and would not influence the electoral outcome in such way) [@research]. I am interested in exploring this topic further by analyzing the variables used and figuring out whether this conclusion stands across demographic groups. In addition, this paper evokes an interest in understanding how Trump’s nationalist rhetoric and media’s portrayal of immigration influxes may have attracted different demographic groups in cities that did not experience such influx (fearing that they might) i.e. the Deep South. 
 
 Dan Hopkins offers a link to the data for this research paper on [his website](http://web.sas.upenn.edu/danhop/research/">his website). The full paper can be found [here](https://www-pnas-org.ezp-prod1.hul.harvard.edu/content/pnas/116/50/25023.full.pdf). For more information about this project please visit my project's Github repo^[[All analysis for this paper is available here.](https://github.com/deboragonzalez/Milestones)].
 
@@ -188,9 +192,12 @@ new_data %>%
 # Appendix 
 
 ### Table Replication
-An Appendix which include a replication of at least one of the tables from your paper. (It can be a simple summary table.) Also, take a screen shot of the original table and include that image in your Appendix. We want to see how closely your results match the original paper’s.
 
-```{r table1}
+Replication of Table 1:
+
+Robust standard errors are in parentheses. *P < 0.05; **P < 0.01. Precinct-level analysis; weighted to number of votes 2012; proportional changes top and  bottom coded at 1 and −1. Note: Dependent variable is change in GOP vote share, 2012 to 2016. Prop., proportion
+
+```{r table1, results="asis"}
 
 # AnalyzePooledPrecinctLevelFiles.do 
 
@@ -218,6 +225,9 @@ An Appendix which include a replication of at least one of the tables from your 
 
 # Regression Model 1:
 # regress `dv' `iv_c_1611' [aweight=weight]
+
+precinct_data <- precinct_data %>% 
+  drop_na()
 
 m1 <- lm(gop_propvote_change ~ d1611_hispanic, data = precinct_data, weights = weight) 
 
@@ -269,23 +279,66 @@ m4 <-  lm(gop_propvote_change ~  dprop1611_hispanic + l11_hispanic + d1611_poor 
 
 # Regression Model 5:
 
+# regress `dv' `iv_c_1600' [aweight=weight], robust
 
+m5 <- lm(gop_propvote_change ~ d1600_hispanic, 
+         data = precinct_data, 
+         weights = weight) 
 
 
 
 # Regression Model 6:
 
+# regress `dv' `iv_c_1600' `cv_c_1600' `cv_l_1600' [aweight=weight], robust
 
+m6 <- lm(gop_propvote_change ~ d1600_hispanic + l00_hispanic + d1600_poor + d1600_unemp + 
+           d1600_mfg + d1600_pop + l00_poor + l00_unemp + l00_mfg + l00_density + l00_black + 
+           l00_educba + countyid,
+         data = precinct_data,
+         weights = weight)
 
 
 # Regression Model 7:
+# regress `dv' `iv_c_1600' `cv_c_1600' `cv_l_1600' rv12d_* [aweight=weight], robust
 
+m7 <- lm(gop_propvote_change ~ d1600_hispanic + l00_hispanic + d1600_poor + d1600_unemp + 
+           d1600_mfg + d1600_pop + l00_poor + l00_unemp + l00_mfg + l00_density + l00_black + 
+           l00_educba + countyid + decile_repvote12,
+         data = precinct_data,
+         weights = weight)
 
 
 
 # Regression Model 8:
+# regress `dv' `iv_pc_1600' `cv_c_1600' `cv_l_1600'  rv12d_* [aweight=weight], robust
 
-# The variable definitions from 02_AnalyzePooledPrecinctLevelFiles.do  
+m8 <- lm(gop_propvote_change ~ dprop1600_hispanic + l00_hispanic + d1600_poor + d1600_unemp + 
+           d1600_mfg + d1600_pop + l00_poor + l00_unemp + l00_mfg + l00_density + l00_black + 
+           l00_educba + countyid + decile_repvote12,
+         data = precinct_data,
+         weights = weight)
+
+
+stargazer(m1, m2, m3, m4, m5, m6, m7, m8,
+          title = "Table 1. Change in Republican vote share 2012 to 2016 and change in Hispanic population, various time intervals",
+         omit = c("d1611_poor", "d1611_unemp", "d1611_rent", "d1611_rent_income", "d1611_housing_150", "d1611_mfg",
+                  "d1611_pop", "l11_poor", "l11_unemp", "l11_rent", "l11_rent_income", "l11_housing_150", "l11_mfg",
+                  "l11_density", "l11_black", "l11_educba", "countyid", "d1600_poor", "d1600_unemp", "d1600_mfg",
+                  "d1600_pop", "l00_poor", "l00_unemp", "l00_mfg", "l00_density", "l00_black", "l00_educba",
+                  "decile_repvote12"),
+         omit.stat = c("f", "ser"),
+         covariate.labels = c("Change in Prop. Hispanic, 2011 to 2016", "Prop. Change in Prop. Hispanic, 2011 to 2016",
+                              "Prop. Hispanic 2011", "Prop. Change in Prop. Hispanic, 2000 to 2016",
+                              "Change in Prop. Hispanic, 2000 to 2016","Prop. Hispanic 2000"),
+         dep.var.labels.include = FALSE,
+         column.sep.width = "-15pt",
+         no.space = T,
+         float.env = "sidewaystable")
+          
+          
+
+
+# The variable definitions from 02_AnalyzePooledPrecinctLevelFiles .do  
 
 	# if `modelgroups'==1 {
 	# 
@@ -308,8 +361,10 @@ m4 <-  lm(gop_propvote_change ~  dprop1611_hispanic + l11_hispanic + d1611_poor 
 	# 	local outregfile = "$TABLELOC/Table01_WeightedFullSample"
 ```
 
-
+\newpage
 ### Original Table
+
+![This table offers a summary of the 8 main regression models for the original paper while omitting several control variables in the output.](Original_Table1.JPG)
 
 \newpage
 # References
