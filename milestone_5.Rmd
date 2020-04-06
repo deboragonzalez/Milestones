@@ -11,8 +11,6 @@ biblio-style: "apalike"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-options(tinytex.verbose = TRUE)
-
 
 library(haven)
 library(tinytex)
@@ -44,7 +42,7 @@ Research Paper: Local demographic changes and US presidential voting, 2012 to 20
 
 Authors: Seth J. Hilla, Daniel J. Hopkins, and Gregory A. Huberc
 
-Thi PDF document present an initial overview of the replication exercise through a high-level visual presentation and a textual overview of the authors' findings and methods.
+Thi PDF document present an initial overview of the replication exercise through a high-level visual presentation and a textual overview of the authors' findings and methods [@guide].
 
 # Overview
 The topics of immigration and the increase of racial and ethnic minorities have been fairly prevalent in media, social media, and political rhetoric over the last few years, but do these phenomena actually influence voting behavior? This study analyzes voting patterns in areas that received an influx of immigrants prior to the 2016 general election. Notably, using precinct-level data, it finds that these influxes did not influence voting behavior in favor of Trump, but rather (in a slight way) benefited his opponent in those particular areas. In other words, local demographic changes are not, on their own, increasing support for anti-immigration candidates. The authors argue that this means the cities in question are not engaging in the often suggested “threatened response” associated with voting behavior in light of immigration influxes. The authors acknowledge that "despite its disparate local impacts, immigration may be a symbolic, nationalized issue whose effects, do not depend on local experiences." However, the actual connection has yet to be proven empirically and it is tough to do so given several factors influencing voting patterns. Some of these factors include, but are not limited to, greater exposure to international trade and declining economic prospects for the less educated. The authors explain that 'positive intergroup contact' could be responsible for the seemingly 'supportive' voting patterns at low levels of aggregation (locally). 
@@ -195,7 +193,6 @@ new_data %>%
 
 Replication of Table 1:
 
-Robust standard errors are in parentheses. *P < 0.05; **P < 0.01. Precinct-level analysis; weighted to number of votes 2012; proportional changes top and  bottom coded at 1 and −1. Note: Dependent variable is change in GOP vote share, 2012 to 2016. Prop., proportion
 
 ```{r table1, results="asis"}
 
@@ -326,16 +323,27 @@ stargazer(m1, m2, m3, m4, m5, m6, m7, m8,
                   "l11_density", "l11_black", "l11_educba", "countyid", "d1600_poor", "d1600_unemp", "d1600_mfg",
                   "d1600_pop", "l00_poor", "l00_unemp", "l00_mfg", "l00_density", "l00_black", "l00_educba",
                   "decile_repvote12"),
-         omit.stat = c("f", "ser"),
-         covariate.labels = c("Change in Prop. Hispanic, 2011 to 2016", "Prop. Change in Prop. Hispanic, 2011 to 2016",
+                  covariate.labels = c("Change in Prop. Hispanic, 2011 to 2016", "Prop. Change in Prop. Hispanic, 2011 to 2016",
                               "Prop. Hispanic 2011", "Prop. Change in Prop. Hispanic, 2000 to 2016",
                               "Change in Prop. Hispanic, 2000 to 2016","Prop. Hispanic 2000"),
+         omit.stat = c("f", "ser"),
          dep.var.labels.include = FALSE,
+         
+         # Need to work on getting rid of dependent variable row.
+         
          column.sep.width = "-15pt",
-         no.space = T,
-         float.env = "sidewaystable")
+         no.space = T)
+
+        # float.env = "sidewaystable")
+          # This was not necessary in the end bc I was able to reduce size.
           
-          
+# I need to figure out how to add this to the notes section at the bottom later:
+# Robust standard errors are in parentheses. *P < 0.05; **P < 0.01.
+# Precinct-level analysis; weighted to number of votes 2012; proportional
+# changes top and  bottom coded at 1 and −1.
+
+# Note: Dependent variable is change in GOP vote share, 2012 to 2016. Prop.,
+# proportion
 
 
 # The variable definitions from 02_AnalyzePooledPrecinctLevelFiles .do  
@@ -360,6 +368,8 @@ stargazer(m1, m2, m3, m4, m5, m6, m7, m8,
 	# 	local notes="Precinct-level analysis; Weighted to number of votes 2012; Proportional changes top and bottom coded at 1 and -1"
 	# 	local outregfile = "$TABLELOC/Table01_WeightedFullSample"
 ```
+
+I need to work on getting rid of the dependent variable row and adding the note. I also need to reorder the varibale output and make sure that all of the numbers replicate well.
 
 \newpage
 ### Original Table
