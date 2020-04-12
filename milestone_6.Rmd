@@ -19,6 +19,7 @@ library(ggthemes)
 library(tidyverse)
 library(gt)
 library(broom)
+library(cowplot)
 ```
 
 
@@ -41,7 +42,7 @@ Research Paper: Local demographic changes and US presidential voting, 2012 to 20
 
 Authors: Seth J. Hilla, Daniel J. Hopkins, and Gregory A. Huberc
 
-This PDF document present the working replication exercise of the afore-mentioned academic paper through a high-level visual presentation, a textual overview of the authors' findings and methods, and a close-replication of the original analysis. It also contains an extension proposal for future development of the findings.
+This PDF document present the working replication exercise of the afore-mentioned academic paper through a textual overview of the authors' findings and methods, a high-level visual presentation, and a close-replication of the original analysis. It also contains an extension proposal, which will become the core of this project, as a form of critique, development, and/or expansion of the original findings.
 
 # Overview of Original Paper
 The topics of immigration and the increase of racial and ethnic minorities have been fairly prevalent in media, social media, and political rhetoric over the last few years, but do these phenomena actually influence voting behavior? This study analyzes voting patterns in areas that received an influx of immigrants prior to the 2016 general election. Notably, using precinct-level data, it finds that these influxes did not influence voting behavior in favor of Trump, but rather (in a slight way) benefited his opponent in those particular areas. In other words, local demographic changes are not, on their own, increasing support for anti-immigration candidates. The authors argue that this means the cities in question are not engaging in the often suggested “threatened response” associated with voting behavior in light of immigration influxes. The authors acknowledge that "despite its disparate local impacts, immigration may be a symbolic, nationalized issue whose effects, do not depend on local experiences." However, the actual connection has yet to be proven empirically and it is tough to do so given several factors influencing voting patterns. Some of these factors include, but are not limited to, greater exposure to international trade and declining economic prospects for the less educated. The authors explain that 'positive intergroup contact' could be responsible for the seemingly 'supportive' voting patterns at low levels of aggregation (locally). 
@@ -55,17 +56,15 @@ Dan Hopkins offers a link to the data for this research paper on [his website](h
 
 
 
-Milestone #6. Submit a PDF or html via Canvas. 
+### Milestone #6. Submit a PDF or html via Canvas. 
 
 In addition to the the elements from Milestone #5, your paper should include:
 
-An Appendix in which you replicate all results — or all the important results — from your paper. 
+* An Appendix in which you replicate all results — or all the important results — from your paper. 
 
+* A clear statement about what aspects of the paper you were able to replicate and which parts, if any, you were not able to replicate.
 
-A clear statement about what aspects of the paper you were able to replicate and which parts, if any, you were not able to replicate.
-
-
-500 words about your proposed extension. You do not have to have done the extension yet.
+* 500 words about your proposed extension. You do not have to have done the extension yet.
 
 \newpage
 # Proposed Extension
@@ -427,7 +426,7 @@ fig1a <- sample_1 %>%
   # thought it made the most sense in evaluating the effect of the change.
   # l11_density OR quartile_popdens
   
-  stat_smooth(method = "loess", formula = y ~ x, size = 0.5, color = "black", se = FALSE) +
+  stat_smooth(method = "loess", formula = y ~ x, size = 0.5, color = "green", se = FALSE) +
   
   # Method loess is a smoothing method that acts much like a regression, but it
   # is not linear.
@@ -447,7 +446,10 @@ fig1a <- sample_1 %>%
   theme_minimal()
 
 # I have so far been unable to replicate the x axis tick labels, but I have been
-# able to get the x and y axis limits.
+# able to get the x and y axis limits. I may need to change the theme to
+# replicate the axis lines format.
+
+fig1a
   
 ```
 
@@ -474,8 +476,8 @@ new_precinct <- precinct_data %>%
 # variable.
 
 sample_2 <- sample_n(new_precinct, 2000) %>% 
-  mutate(d1600_hispanic <= quantile(d1611_hispanic,.95,na.rm=T) & 
-         d1600_hispanic >= quantile(d1611_hispanic,.05,na.rm=T))
+  mutate(d1600_hispanic <= quantile(d1600_hispanic,.95,na.rm=T) & 
+         d1600_hispanic >= quantile(d1600_hispanic,.05,na.rm=T))
   
 # With every sample ran a different number of non-finite/missing values exists,
 # and a warning sign appears. Because these values are not relevant to the
@@ -494,7 +496,7 @@ fig1b <- sample_2 %>%
   # This use of alpha allows for the density shading where more precincts lie in
   # the grid.
   
-  stat_smooth(method = "loess", formula = y ~ x, size = 0.5, color = "black", se = FALSE) +
+  stat_smooth(method = "loess", formula = y ~ x, size = 0.5, color = "green", se = FALSE) +
   
   # Method loess is a smoothing method that acts much like a regression, but it
   # is not linear.
@@ -511,10 +513,151 @@ fig1b <- sample_2 %>%
        x = "Change in population share Hispanic, 2000 to 2016") + 
   theme_minimal()
 
+# I may need to change the theme to replicate the axis lines format.
+
+fig1b
+
 ```
 
 
+```{r fig1c}
 
+
+# This graphic replicates Fig. 1C from the paper:
+
+# Change in Republican vote share, 2012 to 2016, and Proportional change in
+# population Hispanic, 2011 to 2016. Note: Points are random samples of 2,000
+# precincts. Loess lines are generated from all observations. Points are shaded
+# corresponding to density, with darker colors indicating more precincts.
+
+# I am using the sample function to get a random sample from my precinct
+# dataset. I was able to create the loess line using geom_smooth, which does not
+# appear disimilar to the paper's model.
+
+new_precinct <- precinct_data %>% 
+  drop_na()
+
+
+# To prepare my sample using the inner 90% of the data, I use the quatile
+# function inside a mutate just like before, but this time for the hispanic 2000
+# variable.
+
+sample_3 <- sample_n(new_precinct, 2000) %>% 
+  mutate(dprop1611_hispanic_notopcode <= quantile(dprop1611_hispanic_notopcode,.95,na.rm=T) & 
+         dprop1611_hispanic_notopcode >= quantile(dprop1611_hispanic_notopcode,.05,na.rm=T))
+  
+# With every sample ran a different number of non-finite/missing values exists,
+# and a warning sign appears. Because these values are not relevant to the
+# graphic I'm constructing, I will ignore these warnings. 
+
+
+
+fig1c <- sample_3 %>% 
+  ggplot(aes(x = dprop1611_hispanic_notopcode, y = gop_propvote_change)) + 
+  
+  # gop_propvote_change is Change in Prop of Republican Voters 2016-2012
+  # d1600_hispanic is Change in Prop of Hispanic 2000-2016
+  
+  geom_point(alpha = 0.2) +
+  
+  # This use of alpha allows for the density shading where more precincts lie in
+  # the grid.
+  
+  stat_smooth(method = "loess", formula = y ~ x, size = 0.5, color = "green", se = FALSE) +
+  
+  # Method loess is a smoothing method that acts much like a regression, but it
+  # is not linear.
+
+  
+  xlim(0.0, 4.0) +
+  ylim(-0.4,0.4) +
+  
+
+  # This will emphasize the part of the graph that is most dense.
+  
+  labs(title = "C",
+       y = "Change in GOP share, 2012 to 2016",
+       x = "Proportional change in population Hispanic, 2011 to 2016") + 
+  theme_minimal()
+
+# I may need to change the theme to replicate the axis lines format.
+
+fig1c
+
+```
+
+
+```{r fig1d}
+
+# This graphic replicates Fig. 1D from the paper:
+
+# Change in Republican vote share, 2012 to 2016, and Proportional change in
+# population Hispanic, 2000 to 2016. Note: Points are random samples of 2,000
+# precincts. Loess lines are generated from all observations. Points are shaded
+# corresponding to density, with darker colors indicating more precincts.
+
+# I am using the sample function to get a random sample from my precinct
+# dataset. I was able to create the loess line using geom_smooth, which does not
+# appear disimilar to the paper's model.
+
+new_precinct <- precinct_data %>% 
+  drop_na()
+
+
+# To prepare my sample using the inner 90% of the data, I use the quatile
+# function inside a mutate just like before, but this time for the hispanic 2000
+# variable.
+
+sample_4 <- sample_n(new_precinct, 2000) %>% 
+  mutate(dprop1600_hispanic_notopcode <= quantile(dprop1600_hispanic_notopcode,.95,na.rm=T) & 
+         dprop1600_hispanic_notopcode >= quantile(dprop1600_hispanic_notopcode,.05,na.rm=T))
+  
+# With every sample ran a different number of non-finite/missing values exists,
+# and a warning sign appears. Because these values are not relevant to the
+# graphic I'm constructing, I will ignore these warnings. 
+
+
+
+fig1d <- sample_4 %>% 
+  ggplot(aes(x = dprop1600_hispanic_notopcode, y = gop_propvote_change)) + 
+  
+  # gop_propvote_change is Change in Prop of Republican Voters 2016-2012
+  # d1600_hispanic is Change in Prop of Hispanic 2000-2016
+  
+  geom_point(alpha = 0.2) +
+  
+  # This use of alpha allows for the density shading where more precincts lie in
+  # the grid.
+  
+  stat_smooth(method = "loess", formula = y ~ x, size = 0.5, color = "green", se = FALSE) +
+  
+  # Method loess is a smoothing method that acts much like a regression, but it
+  # is not linear.
+
+  
+  xlim(0.0, 4.0) +
+  ylim(-0.4,0.4) +
+  
+
+  # This will emphasize the part of the graph that is most dense.
+  
+  labs(title = "D",
+       y = "Change in GOP share, 2012 to 2016",
+       x = "Proportional change in population Hispanic, 2000 to 2016") + 
+  theme_minimal()
+
+# I may need to change the theme to replicate the axis lines format.
+
+fig1d
+
+```
+
+
+```{r fig1}
+
+# Will potentially figure out how to put them together!
+
+```
 
 
 \newpage
