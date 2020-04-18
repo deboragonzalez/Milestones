@@ -1,5 +1,5 @@
 ---
-title: 'Milestone #7'
+title: 'Milestone #7: The Extension'
 author: "Debi Gonzalez"
 date: "4/15/2020"
 output: bookdown::pdf_document2
@@ -37,21 +37,24 @@ precinct_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/PrecinctData
 ```
 
 \newpage
+
+# Abstract
+
+Hopkins and colleagues (2019) argue that demographic changes at low levels of aggregation are not associated with increased vote shifts toward an anti-immigration presidential candidate between 2012 and 2016. More specifically, the authors' estimates find little evidence that influxes of Hispanics or noncitizen immigrants benefited Trump relative to past Republicans, instead they indicate that such demographic changes were associated with shifts to Clinton. This is a replication and extension project of the "Local demographic changes and US presidential voting, 2012 to 2016" study by Seth J. Hilla, Daniel J. Hopkins, and Gregory A. Huberc, which explored how demographic changes from 2000 to 2016 affected the 2016 general election outcome. The topics of immigration and the increase of racial and ethnic minorities have been fairly prevalent in media, social media, and political rhetoric over the last few years, but do these phenomena actually influence voting behavior? This study analyzes voting patterns in areas that received an influx of immigrants prior to the 2016 general election. This document presents the working replication exercise of the afore-mentioned academic paper through a textual overview of the authors' findings and methods, a high-level visual presentation of the data, and a close-replication of the original analysis. It also contains an extension proposal, which will become the core of this project, as a form of critique, development, and/or expansion of the original findings. Currently, 3 out of the 6 proposed extension analysis have been addressed.
+
+
+\newpage
 # Introduction
 
 Research Paper: Local demographic changes and US presidential voting, 2012 to 2016
 
 Authors: Seth J. Hilla, Daniel J. Hopkins, and Gregory A. Huberc
 
-### Abstract
-
-Hopkins and Colleagues (2019) argue that demographic changes at low levels of aggregation are not associated with increased vote shifts toward an anti-immigration presidential candidate between 2012 and 2016. More specifically, the authors' estimates find little evidence that influxes of Hispanics or noncitizen immigrants benefited Trump relative to past Republicans, instead they indicate that such demographic changes were associated with shifts to Clinton. This is a replication and extension project of the "Local demographic changes and US presidential voting, 2012 to 2016" study by Seth J. Hilla, Daniel J. Hopkins, and Gregory A. Huberc, which explored how demographic changes from 2000 to 2016 affected the 2016 general election outcome. The topics of immigration and the increase of racial and ethnic minorities have been fairly prevalent in media, social media, and political rhetoric over the last few years, but do these phenomena actually influence voting behavior? This study analyzes voting patterns in areas that received an influx of immigrants prior to the 2016 general election. This document presents the working replication exercise of the afore-mentioned academic paper through a textual overview of the authors' findings and methods, a high-level visual presentation of the data, and a close-replication of the original analysis. It also contains an extension proposal, which will become the core of this project, as a form of critique, development, and/or expansion of the original findings. Currently, 3 out of the 6 proposed extension analysis have been addressed.
-
 Dan Hopkins offers a link to the data for this research paper on [his website](http://web.sas.upenn.edu/danhop/research/">his website). The full paper can be found [here](https://www-pnas-org.ezp-prod1.hul.harvard.edu/content/pnas/116/50/25023.full.pdf). For more information about this project please visit my project's Github repo^[[All analysis for this paper is available here.](https://github.com/deboragonzalez/Milestones)].
 
-\newpage
 
-### Overview of Original Paper & Literature Review
+
+# Overview of Original Paper & Literature Review
 
 As Dan Hopkins and colleagues explain in their paper, "immigration and demographic change have become highly salient in American politics, partly because of the 2016 campaign of Donald Trump." President Trump's victory seemed to solidify the previously proposed notion that demographic changes lead to "threatened reponse" in native voters realigning voting patterns on "the basis of ethnicity, nativity, nationalism, and education." The theory implies that as demographic changes occur, native voters shift towards more populist and outspoken anti-immigration candidates. Research of anti-immigrant and Brexit, U.K. independent party, support in the United Kingdom found that these attitudes are higher in "localities that have low immigrant shares but recent demographic changes." This trend is also true of other countries in continental Europe. In the United States, previous research with county-level data have shown that pro-GOP shifts are only associated with increases in low-skilled immigrants while increases in high-skill immigrants actually increases support for the Democratic parties. [insert source ref 27] Other studies have found an associationg between the percentage change in Hispanic population and shifts to the Republican Party from 2012-2016 at county-level. [insert ref13] Despite these results, the theory remains inconclusive as another study [insert ref 28] fails to find such a strong relationship between proportion change of Hispanics and Republican support using survey data and [insert ref 29] "show that the relationship between local demographic change and Trump favorability among Republicans was time-dependent." 
 
