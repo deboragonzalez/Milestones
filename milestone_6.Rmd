@@ -42,36 +42,38 @@ Research Paper: Local demographic changes and US presidential voting, 2012 to 20
 
 Authors: Seth J. Hilla, Daniel J. Hopkins, and Gregory A. Huberc
 
-This PDF document present the working replication exercise of the afore-mentioned academic paper through a textual overview of the authors' findings and methods, a high-level visual presentation, and a close-replication of the original analysis. It also contains an extension proposal, which will become the core of this project, as a form of critique, development, and/or expansion of the original findings.
-
-# Overview of Original Paper
-The topics of immigration and the increase of racial and ethnic minorities have been fairly prevalent in media, social media, and political rhetoric over the last few years, but do these phenomena actually influence voting behavior? This study analyzes voting patterns in areas that received an influx of immigrants prior to the 2016 general election. Notably, using precinct-level data, it finds that these influxes did not influence voting behavior in favor of Trump, but rather (in a slight way) benefited his opponent in those particular areas. In other words, local demographic changes are not, on their own, increasing support for anti-immigration candidates. The authors argue that this means the cities in question are not engaging in the often suggested “threatened response” associated with voting behavior in light of immigration influxes. The authors acknowledge that "despite its disparate local impacts, immigration may be a symbolic, nationalized issue whose effects, do not depend on local experiences." However, the actual connection has yet to be proven empirically and it is tough to do so given several factors influencing voting patterns. Some of these factors include, but are not limited to, greater exposure to international trade and declining economic prospects for the less educated. The authors explain that 'positive intergroup contact' could be responsible for the seemingly 'supportive' voting patterns at low levels of aggregation (locally). 
-
-
-The authors use 8 main regression models as well as loess lines in their analysis. They study change in proportion of Hispanics and proportion change of Hispanic proportions concluding that in places with demographic shifts, Trump did not benefit, but, in fact, Clinton did. These findings are further validated by a similar model utilizing foreign-born, noncitizens proportions to discard the posibility of increased Clinton support due to changing electoral composition (given that noncitizens cannot vote and would not influence the electoral outcome in such way) [@research]. I am interested in exploring this topic further by analyzing the variables used and figuring out whether this conclusion stands across demographic groups. In addition, this paper evokes an interest in understanding how Trump’s nationalist rhetoric and media’s portrayal of immigration influxes may have attracted different demographic groups in cities that did not experience such influx (fearing that they might) i.e. the Deep South. 
+This is a replication and extension project of the "Local demographic changes and US presidential voting, 2012 to 2016" study by Seth J. Hilla, Daniel J. Hopkins, and Gregory A. Huberc, which explored how demographic changes from 2000 to 2016 affected the 2016 general election outcome. The topics of immigration and the increase of racial and ethnic minorities have been fairly prevalent in media, social media, and political rhetoric over the last few years, but do these phenomena actually influence voting behavior? This study analyzes voting patterns in areas that received an influx of immigrants prior to the 2016 general election. This document presents the working replication exercise of the afore-mentioned academic paper through a textual overview of the authors' findings and methods, a high-level visual presentation of the data, and a close-replication of the original analysis. It also contains an extension proposal, which will become the core of this project, as a form of critique, development, and/or expansion of the original findings.
 
 Dan Hopkins offers a link to the data for this research paper on [his website](http://web.sas.upenn.edu/danhop/research/">his website). The full paper can be found [here](https://www-pnas-org.ezp-prod1.hul.harvard.edu/content/pnas/116/50/25023.full.pdf). For more information about this project please visit my project's Github repo^[[All analysis for this paper is available here.](https://github.com/deboragonzalez/Milestones)].
 
+# Overview of Original Paper & Literature Review
+
+As Dan Hopkins and colleagues explain in their paper, "immigration and demographic change have become highly salient in American politics, partly because of the 2016 campaign of Donald Trump." President Trump's victory seemed to solidify the previously proposed notion that demographic changes lead to "threatened reponse" in native voters realigning voting patterns on "the basis of ethnicity, nativity, nationalism, and education." The theory implies that as demographic changes occur, native voters shift towards more populist and outspoken anti-immigration candidates. Research of anti-immigrant and Brexit, U.K. independent party, support in the United Kingdom found that these attitudes are higher in "localities that have low immigrant shares but recent demographic changes." This trend is also true of other countries in continental Europe. In the United States, previous research with county-level data have shown that pro-GOP shifts are only associated with increases in low-skilled immigrants while increases in high-skill immigrants actually increases support for the Democratic parties. [insert source ref 27] Other studies have found an associationg between the percentage change in Hispanic population and shifts to the Republican Party from 2012-2016 at county-level. [insert ref13] Despite these results, the theory remains inconclusive as another study [insert ref 28] fails to find such a strong relationship between proportion change of Hispanics and Republican support using survey data and [insert ref 29] "show that the relationship between local demographic change and Trump favorability among Republicans was time-dependent." 
+
+Notably, using precinct-level dataset of election results and demographic measures for almost 32,000 precincts in the states
+of Florida, Georgia, Michigan, Nevada, Ohio, Pennsylvania, and Washington, the authors of our paper of interest find that the influxes in Hispanic and foreign born groups did not influence voting behavior in favor of Trump, but rather (in a slight way) benefited his opponent in those particular areas. In other words, local demographic changes are not, on their own, increasing support for anti-immigration candidates. The authors argue that this means the precincts in question are not engaging in the often suggested “threatened response” associated with voting behavior in light of immigration influxes. The authors acknowledge that "despite its disparate local impacts, immigration may be a symbolic, nationalized issue whose effects, do not depend on local experiences." However, the actual connection has yet to be proven empirically and it is tough to do so given several factors influencing voting patterns. Some of these factors include, but are not limited to, greater exposure to international trade and declining economic prospects for the less educated. The authors explain that 'positive intergroup contact' could be responsible for the seemingly 'supportive' voting patterns at low levels of aggregation (locally). This idea is partially supported by Enos & colleagues, whose study shows how individuals with long(er) exposures to minority groups, tend to have less exclusionary attitudes than those who are exposed to them only briefly or those who have never been exposed at all. 
 
 
+The authors employ regression analyses with varying explanatory variable(s) specifications and measures of 'demographic change' resulting in 8 main regression models as well as loess lines that visually and mathematically demonstrate the relevant results. They study change in proportion of Hispanics and proportion change of Hispanic proportions concluding that in places with demographic shifts, Trump did not benefit, but, in fact, Clinton did. These findings are further validated by a similar model utilizing foreign-born, noncitizens proportions to discard the posibility of increased Clinton support due to changing electoral composition (given that noncitizens cannot vote and would not influence the electoral outcome in such way) [@research]. 
 
-
-### Milestone #6. Submit a PDF or html via Canvas. 
-
-In addition to the the elements from Milestone #5, your paper should include:
-
-* An Appendix in which you replicate all results — or all the important results — from your paper. 
-
-* A clear statement about what aspects of the paper you were able to replicate and which parts, if any, you were not able to replicate.
-
-* 500 words about your proposed extension. You do not have to have done the extension yet.
 
 \newpage
 # Proposed Extension
 
-Construct a model that controls for changes in hispanic and changes unemployment to consider the economic influences on gop_share shifts
-Examine the results by state -- construct same models with subset of data by state
-Examine whether there has been shifting from majority rep/dem with changes in hispanic population
+1) Examine the results at higher level of aggregation: construct same models with subset of data by state
+
+* I am interested in exploring this topic further by analyzing the variables used and figuring out whether this conclusion stands across geographic area, when the data is analyzed at the county or state-level. I hope to be able to do this by building the same models utilizing only a subset of the data - i.e. by state. Perhaps I will do this for only some of the states. Another way I can approach this is by grouping by county, and inputting the average values of each variable by county into the model. This would produce values relevant to the association between the explanatory variables and the outcome (gop_vote_share) at the county level.
+
+2) How economic indicators affect Republican vote share: construct a model isolating economic indicators
+
+* I would also like to evaluate the association between economic indicators and changes in Republican voters. I have considered exploring these association in two ways: 1) Construct a model that explains shifts in GOP share of voters in terms of changes in hispanic proportion, changes in unemployment, and proportion change of poor to consider the economic influences on Republican voters share shifts. 2) Construct a model using only changes in unemployment and proportion change of poor as explanatory variables to GOP share. 
+
+3) Examine whether there has been shifting from majority rep/dem with changes in hispanic population.
+
+* To examine whether there has been majority shifts towards Republican or Democrats with changes in hispanic population, I can construct a binary variable that assigns '1' who went from less than 50% republican to more than 50% votes and another variable that does the same for Democrats. These variables can the be evaluated in a regression model with hispanic proportion changes as one of the explanatory variables.
+
+
+This paper evokes an interest in understanding how Trump’s nationalist rhetoric and media’s portrayal of immigration influxes may have attracted different demographic groups in cities that did not experience such influx (fearing that they might) i.e. the Deep South. At this point, the data used in the original paper cannot be used to explore this point as the 32,000 precincts in the sample are from the areas that have received an influx of immigrants (or experienced a demographic shift). However, this may be an interesting point to keep in mind for future research. 
 
 
 
@@ -176,6 +178,8 @@ To create this graphic I utilized several online guides cited in the References 
 
 #### Replication of Table 1:
 
+
+Table 1 presents multiple least-squares regression estimates of how changes in Hispanic populations correlate with increases in Republican precinct-level vote share between 2012 and 2016.
 
 ```{r table1, results="asis"}
 
@@ -352,7 +356,7 @@ stargazer(m1, m2, m3, m4, m5, m6, m7, m8,
 	# 	local outregfile = "$TABLELOC/Table01_WeightedFullSample"
 ```
 
-I need to work on getting rid of the dependent variable row and adding the note. I also need to reorder the varibale output and make sure that all of the numbers replicate well.
+I need to work on getting rid of the dependent variable row and adding the note. I also need to reorder the varibale output to best match the original image.
 
 
 
@@ -366,6 +370,8 @@ I need to work on getting rid of the dependent variable row and adding the note.
 \newpage
 
 ### Figure 1
+
+Figure 1 (A, B, C, & D) examine(s) how changes in Hispanic populations correlate with increases in Republican precinct-level vote share between 2012 and 2016. The figure shows change in the Republican share of the 2-party vote from 2012 to 2016 (positive values indicate pro-Republican shifts) against 4 different measures of change in the Hispanic population on the x axis. The 1st frame (A) measures changing population as the change in the Hispanic proportion of the overall population from 2011 to 2016, the 2nd (B) as the same change from 2000 to 2016, and the 3rd (C) and 4th (D) as proportional changes in the Hispanic population for each period.
 
 ```{r fig1a, warning = FALSE}
 
@@ -662,6 +668,8 @@ fig1d
 
 \newpage
 ### Figure 2
+
+I am currently working to replicate figure 2, but I'm at a bit of a crossroads with the original code. Hope to update soon.
 
 \newpage
 # References
