@@ -1,0 +1,25 @@
+---
+title: 'Milestone #1: Immigration Surges & Nationalism in America'
+author: "Debi Gonzalez"
+date: "2/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r paper link, echo = FALSE}
+
+# Abstract: https://www.pnas.org/content/116/50/25023
+# Full PDF: https://www-pnas-org.ezp-prod1.hul.harvard.edu/content/pnas/116/50/25023.full.pdf
+
+```
+
+
+### Research Paper: Local demographic changes and US presidential voting, 2012 to 2016
+#### By: Seth J. Hilla, Daniel J. Hopkins, and Gregory A. Huberc
+
+The topics of immigration and the increase of racial and ethnic minorities have been fairly prevalent in media, social media, and political rhetoric over the last few years, but do these phenomena actually influence voting behavior? This study analyzes voting patterns in areas that received an influx of  immigrants prior to the 2016 general election. Notably, using precinct-level data, it finds that these influxes did not influence voting behavior in favor of Trump, but rather (in a slight way) benefited his opponent in those particular areas. In other words, local demographic changes are not on their own increasing support for anti-immigration candidates. The authors argue that this means the cities in question are not engaging in the previously suggested “threatened response” associated with voting behavior. I am interested in exploring this topic further by analyzing the variables used and figuring out whether this conclusion stands across demographic groups. In addition, this paper evokes an interest in understanding how Trump’s nationalist rhetoric and media’s portrayal of immigration influxes may have attracted different demographic groups in cities that did not experience such influx (fearing that they might) i.e. the Deep South. The next step entails accessing the data and code associated with this paper. Dan Hopkins offers a link to the data on <u><a href = "http://web.sas.upenn.edu/danhop/research/">his website</a></u>, but I have not yet found the code. The full paper can be found <u><a href = "https://www-pnas-org.ezp-prod1.hul.harvard.edu/content/pnas/116/50/25023.full.pdf">here</a></u>.
+

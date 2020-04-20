@@ -1,0 +1,106 @@
+---
+title: 'Milestone #4: A Replication Exercise Test Run'
+author: "Debora Gonzalez"
+date: "2/28/2020"
+output: bookdown::pdf_document2
+bibliography: references.bib
+biblio-style: "apalike"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(haven)
+library(tinytex)
+library(stargazer)
+library(gt)
+# bookdown::pdf_document2
+```
+
+```{r data setup, echo = FALSE}
+
+county_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/CountyData.dta") 
+
+hispanic_changes <- read_dta("dataverse_files/HHHDemogThreatRepArchive/CountyHispanicChanges.dta")
+
+geo_scope <- read_dta("dataverse_files/HHHDemogThreatRepArchive/GeographicScopeData.dta")
+  
+precinct_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/PrecinctData.dta")
+
+```
+
+\newpage
+# Introduction
+
+
+Research Paper: Local demographic changes and US presidential voting, 2012 to 2016
+
+Authors: Seth J. Hilla, Daniel J. Hopkins, and Gregory A. Huberc
+
+This PDF shows a general understanding of the tools needed to complete my replication final project [@data] for GOV1006.
+
+
+# Overview
+The topics of immigration and the increase of racial and ethnic minorities have been fairly prevalent in media, social media, and political rhetoric over the last few years, but do these phenomena actually influence voting behavior? This study analyzes voting patterns in areas that received an influx of immigrants prior to the 2016 general election. Notably, using precinct-level data, it finds that these influxes did not influence voting behavior in favor of Trump, but rather (in a slight way) benefited his opponent in those particular areas. In other words, local demographic changes are not, on their own, increasing support for anti-immigration candidates. The authors argue that this means the cities in question are not engaging in the often suggested “threatened response” associated with voting behavior in light of immigration influxes. The authors acknowledge that "despite its disparate local impacts, immigration may be a symbolic, nationalized issue whose effects, do not depend on local experiences." However, the actual connection has yet to be proven empirically and it is tough to do so given several factors influencing voting patterns. Some of these factors include, but are not limited to, greater exposure to international trade and declining economic prospects for the less educated. The authors explain that 'positive intergroup contact' could be responsible for the seemingly 'supportive' voting patterns at low levels of aggregation (locally). The authors study change in proportion of Hispanics and proportion change of Hispanic proportions concluding that in places with demographic shifts, Trump did not benefit, but, in fact, Clinton did. These findings are further validated by a similar model utilizing foreign-born, noncitizens proportions to discard the posibility of increased Clinton support due to changing electoral composition (given that noncitizens cannot vote and would not influence the electoral outcome in such way) [@research]. I am interested in exploring this topic further by analyzing the variables used and figuring out whether this conclusion stands across demographic groups. In addition, this paper evokes an interest in understanding how Trump’s nationalist rhetoric and media’s portrayal of immigration influxes may have attracted different demographic groups in cities that did not experience such influx (fearing that they might) i.e. the Deep South. 
+
+Dan Hopkins offers a link to the data for this research paper on [his website](http://web.sas.upenn.edu/danhop/research/">his website). The full paper can be found [here](https://www-pnas-org.ezp-prod1.hul.harvard.edu/content/pnas/116/50/25023.full.pdf). Check out my project's Github repo^[[My project's Github repo.](https://github.com/deboragonzalez/Milestones)].
+
+\newpage
+# A GT Table of my Data
+
+```{r table, echo=FALSE}
+
+# This table shows the average change in proportion of foreign-born individuals
+# and of republican voters respectively. I take the proportion (adding it
+# together while grouped by state), divide it by length of that variable to find
+# the average prop change per state, and multiply it by 100 to get the
+# percentage.
+
+precinct_data %>% 
+  group_by(st) %>% 
+  summarize(avg_foreign_pop_change = round(sum(d1611_foreign)/length(d1611_foreign)*100, 3),
+         avg_rep_pop_change = round(sum(gop_propvote_change)/length(gop_propvote_change)*100, 3)) %>%
+  select(st, avg_foreign_pop_change, avg_rep_pop_change) %>% 
+#  filter(! is.na(avg_foreign_pop_change)) %>% 
+  gt() %>% 
+  tab_header(title = "Average Changes in Proportion of Population Groups by State",
+             subtitle = "Proportion of foreign born and GOP voters respectively between 2011-2016") %>%
+  cols_label(st = "State",
+             avg_foreign_pop_change = "Avg. Change in Foreign Pop.",
+             avg_rep_pop_change = "Avg. Change in Republican Voters") %>% 
+  tab_source_note("Source: HHH Demographic Threat Data Archive: Precinct")
+```
+
+# Regression Models
+```{r regressions, echo = FALSE}
+
+# Variable definitions:
+# d1610_hispanic = change in county proportion of hispanics 2010-2016
+# d1610_foreign = change in county proportion of foreign-born individuals 2010-2016
+# weight = total number of votes per preccint
+
+# reg1 <- glm(d1610_hispanic ~ d1610_foreign, data = county_data)
+
+reg2 <- glm(gop_propvote_change ~ d1610_foreign, data = county_data)
+
+# reg3 <- glm(weight ~ d1610_foreign, data = county_data)
+
+ reg4 <- glm(weight ~ d1610_foreign + d1610_hispanic, data = county_data)
+
+models <- stargazer(reg2, reg4, type = "text",
+            dep.var.labels=c("Change in Prop. Republicans", "Total Votes per Preccint"),
+            covariate.labels=c("Change in Prop. Foreign Born", "Change in Prop. Hispanic"))
+
+
+# The output of these regressions make no numerical & contextual sense, but I
+# will be attempting to gain a better understanding of what exactly these
+# variables are measuring and how they relate to each other soon.
+
+
+```
+
+
+\newpage
+# References
+

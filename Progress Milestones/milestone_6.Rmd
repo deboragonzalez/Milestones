@@ -1,0 +1,675 @@
+---
+title: 'Milestone #6'
+author: "Debi Gonzalez"
+date: "4/5/2020"
+output: bookdown::pdf_document2
+bibliography: references.bib
+biblio-style: "apalike"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+
+library(haven)
+library(tinytex)
+library(stargazer)
+library(ggplot2)
+library(ggthemes)
+library(tidyverse)
+library(gt)
+library(broom)
+library(cowplot)
+```
+
+
+```{r data setup}
+
+county_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/CountyData.dta") 
+
+hispanic_changes <- read_dta("dataverse_files/HHHDemogThreatRepArchive/CountyHispanicChanges.dta")
+
+geo_scope <- read_dta("dataverse_files/HHHDemogThreatRepArchive/GeographicScopeData.dta")
+  
+precinct_data <- read_dta("dataverse_files/HHHDemogThreatRepArchive/PrecinctData.dta")
+
+```
+
+\newpage
+# Introduction
+
+Research Paper: Local demographic changes and US presidential voting, 2012 to 2016
+
+Authors: Seth J. Hilla, Daniel J. Hopkins, and Gregory A. Huberc
+
+This is a replication and extension project of the "Local demographic changes and US presidential voting, 2012 to 2016" study by Seth J. Hilla, Daniel J. Hopkins, and Gregory A. Huberc, which explored how demographic changes from 2000 to 2016 affected the 2016 general election outcome. The topics of immigration and the increase of racial and ethnic minorities have been fairly prevalent in media, social media, and political rhetoric over the last few years, but do these phenomena actually influence voting behavior? This study analyzes voting patterns in areas that received an influx of immigrants prior to the 2016 general election. This document presents the working replication exercise of the afore-mentioned academic paper through a textual overview of the authors' findings and methods, a high-level visual presentation of the data, and a close-replication of the original analysis. It also contains an extension proposal, which will become the core of this project, as a form of critique, development, and/or expansion of the original findings.
+
+Dan Hopkins offers a link to the data for this research paper on [his website](http://web.sas.upenn.edu/danhop/research/">his website). The full paper can be found [here](https://www-pnas-org.ezp-prod1.hul.harvard.edu/content/pnas/116/50/25023.full.pdf). For more information about this project please visit my project's Github repo^[[All analysis for this paper is available here.](https://github.com/deboragonzalez/Milestones)].
+
+# Overview of Original Paper & Literature Review
+
+As Dan Hopkins and colleagues explain in their paper, "immigration and demographic change have become highly salient in American politics, partly because of the 2016 campaign of Donald Trump." President Trump's victory seemed to solidify the previously proposed notion that demographic changes lead to "threatened reponse" in native voters realigning voting patterns on "the basis of ethnicity, nativity, nationalism, and education." The theory implies that as demographic changes occur, native voters shift towards more populist and outspoken anti-immigration candidates. Research of anti-immigrant and Brexit, U.K. independent party, support in the United Kingdom found that these attitudes are higher in "localities that have low immigrant shares but recent demographic changes." This trend is also true of other countries in continental Europe. In the United States, previous research with county-level data have shown that pro-GOP shifts are only associated with increases in low-skilled immigrants while increases in high-skill immigrants actually increases support for the Democratic parties. [insert source ref 27] Other studies have found an associationg between the percentage change in Hispanic population and shifts to the Republican Party from 2012-2016 at county-level. [insert ref13] Despite these results, the theory remains inconclusive as another study [insert ref 28] fails to find such a strong relationship between proportion change of Hispanics and Republican support using survey data and [insert ref 29] "show that the relationship between local demographic change and Trump favorability among Republicans was time-dependent." 
+
+Notably, using precinct-level dataset of election results and demographic measures for almost 32,000 precincts in the states
+of Florida, Georgia, Michigan, Nevada, Ohio, Pennsylvania, and Washington, the authors of our paper of interest find that the influxes in Hispanic and foreign born groups did not influence voting behavior in favor of Trump, but rather (in a slight way) benefited his opponent in those particular areas. In other words, local demographic changes are not, on their own, increasing support for anti-immigration candidates. The authors argue that this means the precincts in question are not engaging in the often suggested “threatened response” associated with voting behavior in light of immigration influxes. The authors acknowledge that "despite its disparate local impacts, immigration may be a symbolic, nationalized issue whose effects, do not depend on local experiences." However, the actual connection has yet to be proven empirically and it is tough to do so given several factors influencing voting patterns. Some of these factors include, but are not limited to, greater exposure to international trade and declining economic prospects for the less educated. The authors explain that 'positive intergroup contact' could be responsible for the seemingly 'supportive' voting patterns at low levels of aggregation (locally). This idea is partially supported by Enos & colleagues, whose study shows how individuals with long(er) exposures to minority groups, tend to have less exclusionary attitudes than those who are exposed to them only briefly or those who have never been exposed at all. 
+
+
+The authors employ regression analyses with varying explanatory variable(s) specifications and measures of 'demographic change' resulting in 8 main regression models as well as loess lines that visually and mathematically demonstrate the relevant results. They study change in proportion of Hispanics and proportion change of Hispanic proportions concluding that in places with demographic shifts, Trump did not benefit, but, in fact, Clinton did. These findings are further validated by a similar model utilizing foreign-born, noncitizens proportions to discard the posibility of increased Clinton support due to changing electoral composition (given that noncitizens cannot vote and would not influence the electoral outcome in such way) [@research]. 
+
+
+\newpage
+# Proposed Extension
+
+1) Examine the results at higher level of aggregation: construct same models with subset of data by state
+
+* I am interested in exploring this topic further by analyzing the variables used and figuring out whether this conclusion stands across geographic area, when the data is analyzed at the county or state-level. I hope to be able to do this by building the same models utilizing only a subset of the data - i.e. by state. Perhaps I will do this for only some of the states. Another way I can approach this is by grouping by county, and inputting the average values of each variable by county into the model. This would produce values relevant to the association between the explanatory variables and the outcome (gop_vote_share) at the county level.
+
+2) How economic indicators affect Republican vote share: construct a model isolating economic indicators
+
+* I would also like to evaluate the association between economic indicators and changes in Republican voters. I have considered exploring these association in two ways: 1) Construct a model that explains shifts in GOP share of voters in terms of changes in hispanic proportion, changes in unemployment, and proportion change of poor to consider the economic influences on Republican voters share shifts. 2) Construct a model using only changes in unemployment and proportion change of poor as explanatory variables to GOP share. 
+
+3) Examine whether there has been shifting from majority rep/dem with changes in hispanic population.
+
+* To examine whether there has been majority shifts towards Republican or Democrats with changes in hispanic population, I can construct a binary variable that assigns '1' who went from less than 50% republican to more than 50% votes and another variable that does the same for Democrats. These variables can the be evaluated in a regression model with hispanic proportion changes as one of the explanatory variables.
+
+
+This paper evokes an interest in understanding how Trump’s nationalist rhetoric and media’s portrayal of immigration influxes may have attracted different demographic groups in cities that did not experience such influx (fearing that they might) i.e. the Deep South. At this point, the data used in the original paper cannot be used to explore this point as the 32,000 precincts in the sample are from the areas that have received an influx of immigrants (or experienced a demographic shift). However, this may be an interesting point to keep in mind for future research. 
+
+
+
+
+\newpage
+
+# A Summary Table of my Data
+
+```{r table, echo=FALSE}
+
+# This table shows the average change in proportion of foreign-born individuals
+# and of republican voters respectively. I take the proportion (adding it
+# together while grouped by state), divide it by length of that variable to find
+# the average prop change per state, and multiply it by 100 to get the
+# percentage.
+
+precinct_data %>% 
+  group_by(st) %>% 
+  summarize(avg_foreign_pop_change = round(sum(d1611_foreign)/length(d1611_foreign)*100, 3),
+         avg_rep_pop_change = round(sum(gop_propvote_change)/length(gop_propvote_change)*100, 3)) %>%
+  select(st, avg_foreign_pop_change, avg_rep_pop_change) %>% 
+#  filter(! is.na(avg_foreign_pop_change)) %>% 
+  gt() %>% 
+  tab_header(title = "Average Changes in Proportion of Population Groups by State",
+             subtitle = "Proportion of foreign born and GOP voters respectively between 2011-2016") %>%
+  cols_label(st = "State",
+             avg_foreign_pop_change = "Avg. Change in Foreign Pop.",
+             avg_rep_pop_change = "Avg. Change in Republican Voters") %>% 
+  tab_source_note("Source: HHH Demographic Threat Data Archive: Precinct")
+```
+
+\newpage
+
+# A Beautiful Graphic
+
+
+
+```{r graphic, warning = FALSE}
+
+# This graphic is an initial attempt to replicate Fig. 1A from the paper:
+
+# Change in Republican vote share, 2012 to 2016, and change in Hispanic
+# population 2011-2016. Note: Points are random samples of 2,000 precincts.
+# Loess lines are generated from all observations. Points are shaded
+# corresponding to density, with darker colors indicating more precincts.
+
+# My graphic complies with the first two lines of that description. I am using
+# the sample function to get a random sample from my geo_scope dataset. I used
+# the geoscope dataset because I wanted to color the dots by state, which the
+# authors do not do, but I thought would be interesting and prettier. I was able
+# to create the loess line using geom_smooth, which does not appear disimilar to
+# the paper's model. I also added the aesthetic enhancement of size as number of
+# voters in 2016 in each precinct.
+
+geo_scope2 <- geo_scope %>% 
+  drop_na()
+
+try2 <- sample_n(geo_scope2, 2000)
+  
+# With every sample ran a different number of non-finite/missing values exists,
+# and a warning sign appears. Because these values are not relevant to the
+# graphic I'm constructing, I will ignore this warnings.
+
+
+
+try2 %>% 
+  ggplot(aes(x = gop_propvote_change, y = d1611_hispanic, size = Total_Voters_2016_Prct)) + 
+  
+  # gop_propvote_change is Change in Prop of Republican Voters 2016-2012
+  # d1611_hispanic is Change in Prop of Hispanic 2011-2016
+  # Total_Voters_2016_Prct is total number of voters by precinct
+  
+  geom_point(aes(color = st), alpha = 0.5) +
+  
+  # st refers to state label
+  
+  stat_smooth(method = "loess", formula = y ~ x, size = 1, se = FALSE) +
+  
+  # Method loess is a smoothing method that acts much like a regression, but it
+  # is not linear.
+  
+  xlim(-.3,.3) +
+  
+  # This will emphasize the part of the graph that is most dense.
+  
+  labs(title = "Republican Vote Share Change vs. Hispanic Population Share Change",
+       subtitle = "How changes in hispanic population share from 2011 to 2016 relate \nto changes in GOP Votes share from the 2012 to the 2016 election", caption = "Source: HHH Demographic Threat Data Archive: Geo_Scope",
+       x = expression(Delta*" Republican Vote Share 2012-2016"),
+       y = expression(Delta*" Hispanic Population Share 2011-2016"),
+       size = "Number of Voters \nby Precinct in 2016",
+       color = "State") + 
+  theme_classic()
+ 
+  
+```
+My graphic shows the association between changes of Republican vote share and Hispanic population proportion changes over the same period of time. I am using the sample function to get a random sample of 2000 observations from my geo_scope dataset. I used the geoscope dataset because I wanted to color the observations by state, which the authors do not do, but I thought would be interesting and prettier. I was able to create the loess line using geom_smooth and it does not appear disimilar to the original paper's model[@smooth]. I also added the aesthetic enhancement of size as number of voters in 2016 in each precinct[@ggplot].
+
+To create this graphic I utilized several online guides cited in the References section of this paper[@data].
+
+\newpage
+# Appendix 
+
+#### Replication of Table 1:
+
+
+Table 1 presents multiple least-squares regression estimates of how changes in Hispanic populations correlate with increases in Republican precinct-level vote share between 2012 and 2016.
+
+```{r table1, results="asis"}
+
+# AnalyzePooledPrecinctLevelFiles.do 
+
+# Estimate the effect of changing Hispanic population on change in Republican
+# vote share from 2012 to 2016.
+
+# Note that the authors create local variables in stata that mean different
+# variables depending on the model that the regression is running. The local
+# variables used in stata for the regressions in Table 1 are outlined within the
+# if_else statement starting with "if `modelgroups'==1". The definitions
+# outlined in it run through the standard regressions the authors built at the
+# bottom of the document that apply to all of the tables/models within the
+# if_else statement.
+
+
+# Table 1 has eight regression models. I'll replicate each of them in R and then
+# try to display them all together to mimic the paper's output.
+
+
+# IMPORTANT: this note refers to the order in which translation of the stata
+# local variables should take place.
+# Variables to present in the production tables (in order). 
+# local keepvars = "`iv_c_1611' `iv_pc_1611' `iv_c_1600'
+# `iv_pc_1600' l11_hispanic l00_hispanic l11_foreign l00_foreign"
+
+# Regression Model 1:
+# regress `dv' `iv_c_1611' [aweight=weight]
+
+precinct_data <- precinct_data %>% 
+  drop_na()
+
+m1 <- lm(gop_propvote_change ~ d1611_hispanic, data = precinct_data, weights = weight) 
+
+
+
+# Regression Model 2:
+# regress `dv' `iv_c_1611' `cv_c_1611' `cv_l_1611' [aweight=weight], robust
+
+m2 <- lm(gop_propvote_change ~ d1611_hispanic + l11_hispanic + d1611_poor + d1611_unemp + 
+           d1611_rent + d1611_rent_income + d1611_housing_150 + d1611_mfg + d1611_pop + 
+           l11_poor + l11_unemp + l11_rent + l11_rent_income + l11_housing_150 + l11_mfg + 
+           l11_density + l11_black + l11_educba + countyid, 
+         data = precinct_data, 
+         weights = weight) 
+
+# m2$coefficients <- m2$coefficients[1:3] 
+# shows only intercept, Change in prop. Hispanic,2011 to 2016, and Prop. Hispanic 2011
+
+
+
+#Regression Model 3:
+# regress `dv' `iv_c_1611' `cv_c_1611' `cv_l_1611' rv12d_* [aweight=weight], robust
+
+m3 <-  lm(gop_propvote_change ~ d1611_hispanic + l11_hispanic + d1611_poor + d1611_unemp + 
+           d1611_rent + d1611_rent_income + d1611_housing_150 + d1611_mfg + d1611_pop + 
+           l11_poor + l11_unemp + l11_rent + l11_rent_income + l11_housing_150 + l11_mfg + 
+           l11_density + l11_black + l11_educba + countyid + decile_repvote12, 
+         data = precinct_data, 
+         weights = weight) 
+
+
+        # I believe that decile_repvote12 combines all of the rv12d_*, which I believe
+        # is what we are supposed to do,
+
+# m3$coefficients <- m2$coefficients[1:3] 
+# shows only intercept, Change in prop. Hispanic,2011 to 2016, and Prop. Hispanic 2011
+
+
+
+# Regression Model 4:
+# regress `dv' `iv_pc_1611' `cv_c_1611' `cv_l_1611'  rv12d_* [aweight=weight], robust
+m4 <-  lm(gop_propvote_change ~  dprop1611_hispanic + l11_hispanic + d1611_poor + d1611_unemp + 
+           d1611_rent + d1611_rent_income + d1611_housing_150 + d1611_mfg + d1611_pop + 
+           l11_poor + l11_unemp + l11_rent + l11_rent_income + l11_housing_150 + l11_mfg + 
+           l11_density + l11_black + l11_educba + countyid + decile_repvote12, 
+         data = precinct_data, 
+         weights = weight) 
+
+
+# Regression Model 5:
+
+# regress `dv' `iv_c_1600' [aweight=weight], robust
+
+m5 <- lm(gop_propvote_change ~ d1600_hispanic, 
+         data = precinct_data, 
+         weights = weight) 
+
+
+
+# Regression Model 6:
+
+# regress `dv' `iv_c_1600' `cv_c_1600' `cv_l_1600' [aweight=weight], robust
+
+m6 <- lm(gop_propvote_change ~ d1600_hispanic + l00_hispanic + d1600_poor + d1600_unemp + 
+           d1600_mfg + d1600_pop + l00_poor + l00_unemp + l00_mfg + l00_density + l00_black + 
+           l00_educba + countyid,
+         data = precinct_data,
+         weights = weight)
+
+
+# Regression Model 7:
+# regress `dv' `iv_c_1600' `cv_c_1600' `cv_l_1600' rv12d_* [aweight=weight], robust
+
+m7 <- lm(gop_propvote_change ~ d1600_hispanic + l00_hispanic + d1600_poor + d1600_unemp + 
+           d1600_mfg + d1600_pop + l00_poor + l00_unemp + l00_mfg + l00_density + l00_black + 
+           l00_educba + countyid + decile_repvote12,
+         data = precinct_data,
+         weights = weight)
+
+
+
+# Regression Model 8:
+# regress `dv' `iv_pc_1600' `cv_c_1600' `cv_l_1600'  rv12d_* [aweight=weight], robust
+
+m8 <- lm(gop_propvote_change ~ dprop1600_hispanic + l00_hispanic + d1600_poor + d1600_unemp + 
+           d1600_mfg + d1600_pop + l00_poor + l00_unemp + l00_mfg + l00_density + l00_black + 
+           l00_educba + countyid + decile_repvote12,
+         data = precinct_data,
+         weights = weight)
+
+
+stargazer(m1, m2, m3, m4, m5, m6, m7, m8,
+          title = "Table 1. Change in Republican vote share 2012 to 2016 and change in Hispanic population, various time intervals",
+         omit = c("d1611_poor", "d1611_unemp", "d1611_rent", "d1611_rent_income", "d1611_housing_150", "d1611_mfg",
+                  "d1611_pop", "l11_poor", "l11_unemp", "l11_rent", "l11_rent_income", "l11_housing_150", "l11_mfg",
+                  "l11_density", "l11_black", "l11_educba", "countyid", "d1600_poor", "d1600_unemp", "d1600_mfg",
+                  "d1600_pop", "l00_poor", "l00_unemp", "l00_mfg", "l00_density", "l00_black", "l00_educba",
+                  "decile_repvote12"),
+                  covariate.labels = c("Change in Prop. Hispanic, 2011 to 2016", "Prop. Change in Prop. Hispanic, 2011 to 2016",
+                              "Prop. Hispanic 2011", "Prop. Change in Prop. Hispanic, 2000 to 2016",
+                              "Change in Prop. Hispanic, 2000 to 2016","Prop. Hispanic 2000"),
+         omit.stat = c("f", "ser"),
+         dep.var.labels.include = FALSE,
+         
+         # Need to work on getting rid of dependent variable row.
+         
+         column.sep.width = "-15pt",
+         no.space = T)
+
+        # float.env = "sidewaystable")
+          # This was not necessary in the end bc I was able to reduce size.
+          
+# I need to figure out how to add this to the notes section at the bottom later:
+# Robust standard errors are in parentheses. *P < 0.05; **P < 0.01.
+# Precinct-level analysis; weighted to number of votes 2012; proportional
+# changes top and  bottom coded at 1 and −1.
+
+# Note: Dependent variable is change in GOP vote share, 2012 to 2016. Prop.,
+# proportion
+
+
+# The variable definitions from 02_AnalyzePooledPrecinctLevelFiles .do  
+
+	# if `modelgroups'==1 {
+	# 
+	# 	local dv = "gop_propvote_change"
+	# 	local iv_c_1611 = "d1611_hispanic"
+	# 	local iv_pc_1611 = "dprop1611_hispanic"
+	# 	local cv_c_1611 = "d1611_poor d1611_unemp d1611_rent d1611_rent_income d1611_housing_150 d1611_mfg d1611_pop"
+	# 	local cv_l_1611 = "l11_hispanic l11_poor l11_unemp l11_rent l11_rent_income l11_housing_150 l11_mfg l11_density l11_black l11_educba i.countyid "
+	# 
+	# 	local iv_c_1600 = "d1600_hispanic"
+	# 	local iv_pc_1600 = "dprop1600_hispanic"
+	# 	local cv_c_1600 = "d1600_poor d1600_unemp d1600_mfg d1600_pop"
+	# 	local cv_l_1600 = "l00_hispanic l00_poor l00_unemp l00_mfg l00_density l00_black l00_educba i.countyid "
+	# 
+	# 	local iv_c_1100 = "d1100_hispanic"
+	# 	local iv_pc_1100 = "dprop1100_hispanic"
+	# 	local cv_c_1100 = "d1100_poor d1100_unemp d1100_mfg d1100_pop"
+	# 		
+	# 	local notes="Precinct-level analysis; Weighted to number of votes 2012; Proportional changes top and bottom coded at 1 and -1"
+	# 	local outregfile = "$TABLELOC/Table01_WeightedFullSample"
+```
+
+I need to work on getting rid of the dependent variable row and adding the note. I also need to reorder the varibale output to best match the original image.
+
+
+
+
+\newpage
+### Original Table
+
+![This table offers a summary of the 8 main regression models for the original paper while omitting several control variables in the output.](Original_Table1.JPG)
+
+
+\newpage
+
+### Figure 1
+
+Figure 1 (A, B, C, & D) examine(s) how changes in Hispanic populations correlate with increases in Republican precinct-level vote share between 2012 and 2016. The figure shows change in the Republican share of the 2-party vote from 2012 to 2016 (positive values indicate pro-Republican shifts) against 4 different measures of change in the Hispanic population on the x axis. The 1st frame (A) measures changing population as the change in the Hispanic proportion of the overall population from 2011 to 2016, the 2nd (B) as the same change from 2000 to 2016, and the 3rd (C) and 4th (D) as proportional changes in the Hispanic population for each period.
+
+```{r fig1a, warning = FALSE}
+
+# This graphic replicates Fig. 1A from the paper:
+
+# Change in Republican vote share, 2012 to 2016, and change in Hispanic
+# population 2011-2016. Note: Points are random samples of 2,000 precincts.
+# Loess lines are generated from all observations. Points are shaded
+# corresponding to density, with darker colors indicating more precincts.
+
+# My graphic complies with the first two lines of that description. I am using
+# the sample function to get a random sample from my precinct dataset. I was
+# able to create the loess line using geom_smooth, which does not appear
+# disimilar to the paper's model.
+
+new_precinct <- precinct_data %>% 
+  drop_na()
+
+# How the original created the internal 90% of data selection:
+# int.90 <- function(x) {
+  # Return boolean for data in the interior 90% of data.
+#  x <= quantile(x,.95,na.rm=T) & x >= quantile(x,.05,na.rm=T)}
+
+# interior 90% of data, no log scale
+  # On d1611.
+#  DT[int.90(d1611_hispanic),.myPlot(x=d1611_hispanic,y=gop_propvote_change,ylab="Change in GOP share, 2012 to 2016",xlab="Change in population share Hispanic, 2011 to 2016")]
+
+# This means they only used the inner 90% of the change in hispanic variable.
+
+
+# To prepare my sample using the inner 90% of the data, I use the quatile
+# function inside a mutate.
+
+sample_1 <- sample_n(new_precinct, 2000) %>% 
+  mutate(d1611_hispanic <= quantile(d1611_hispanic,.95,na.rm=T) & 
+         d1611_hispanic >= quantile(d1611_hispanic,.05,na.rm=T))
+  
+# With every sample ran a different number of non-finite/missing values exists,
+# and a warning sign appears. Because these values are not relevant to the
+# graphic I'm constructing, I will ignore these warnings. 
+
+
+
+fig1a <- sample_1 %>% 
+  ggplot(aes(x = d1611_hispanic, y = gop_propvote_change)) + 
+  
+  # gop_propvote_change is Change in Prop of Republican Voters 2016-2012
+  # d1611_hispanic is Change in Prop of Hispanic 2011-2016
+  # Total_Voters_2016_Prct is total number of voters by precinct
+  
+  geom_point(alpha = 0.2) +
+  
+  # At first, I was confused and thought their mention of density referred to
+  # the density variables in my dataset, but it is only referring to the number
+  # of precincts with overlapping numbers causing darker shades. Nothing to do
+  # on my end. The other density variable could be quartile_popdens, which
+  # refers to Quartile of 2016 Population Density. I chose 2011 density bc I
+  # thought it made the most sense in evaluating the effect of the change.
+  # l11_density OR quartile_popdens
+  
+  stat_smooth(method = "loess", formula = y ~ x, size = 0.5, color = "green", se = FALSE) +
+  
+  # Method loess is a smoothing method that acts much like a regression, but it
+  # is not linear.
+  
+# scale_x_discrete(breaks = seq(-0.04, 0.08, by = 0.02)) +
+# scale_x_continuous(breaks = seq(-0.04, 0.08, by = 0.02)) 
+  
+  xlim(-0.04, 0.08) +
+  ylim(-0.4,0.4) +
+  
+
+  # This will emphasize the part of the graph that is most dense.
+  
+  labs(title = "A",
+       y = "Change in GOP share, 2012 to 2016",
+       x = "Change in population share Hispanic, 2011 to 2016") + 
+  theme_minimal()
+
+# I have so far been unable to replicate the x axis tick labels, but I have been
+# able to get the x and y axis limits. I may need to change the theme to
+# replicate the axis lines format.
+
+fig1a
+  
+```
+
+
+```{r fig1b}
+
+# This graphic replicates Fig. 1B from the paper:
+
+# Change in Republican vote share, 2012 to 2016, and change in Hispanic
+# population 2000-2016. Note: Points are random samples of 2,000 precincts.
+# Loess lines are generated from all observations. Points are shaded
+# corresponding to density, with darker colors indicating more precincts.
+
+# I am using the sample function to get a random sample from my precinct
+# dataset. I was able to create the loess line using geom_smooth, which does not
+# appear disimilar to the paper's model.
+
+new_precinct <- precinct_data %>% 
+  drop_na()
+
+
+# To prepare my sample using the inner 90% of the data, I use the quatile
+# function inside a mutate just like before, but this time for the hispanic 2000
+# variable.
+
+sample_2 <- sample_n(new_precinct, 2000) %>% 
+  mutate(d1600_hispanic <= quantile(d1600_hispanic,.95,na.rm=T) & 
+         d1600_hispanic >= quantile(d1600_hispanic,.05,na.rm=T))
+  
+# With every sample ran a different number of non-finite/missing values exists,
+# and a warning sign appears. Because these values are not relevant to the
+# graphic I'm constructing, I will ignore these warnings. 
+
+
+
+fig1b <- sample_2 %>% 
+  ggplot(aes(x = d1600_hispanic, y = gop_propvote_change)) + 
+  
+  # gop_propvote_change is Change in Prop of Republican Voters 2016-2012
+  # d1600_hispanic is Change in Prop of Hispanic 2000-2016
+  
+  geom_point(alpha = 0.2) +
+  
+  # This use of alpha allows for the density shading where more precincts lie in
+  # the grid.
+  
+  stat_smooth(method = "loess", formula = y ~ x, size = 0.5, color = "green", se = FALSE) +
+  
+  # Method loess is a smoothing method that acts much like a regression, but it
+  # is not linear.
+
+  
+  xlim(0.0, 0.15) +
+  ylim(-0.4,0.4) +
+  
+
+  # This will emphasize the part of the graph that is most dense.
+  
+  labs(title = "B",
+       y = "Change in GOP share, 2012 to 2016",
+       x = "Change in population share Hispanic, 2000 to 2016") + 
+  theme_minimal()
+
+# I may need to change the theme to replicate the axis lines format.
+
+fig1b
+
+```
+
+
+```{r fig1c}
+
+
+# This graphic replicates Fig. 1C from the paper:
+
+# Change in Republican vote share, 2012 to 2016, and Proportional change in
+# population Hispanic, 2011 to 2016. Note: Points are random samples of 2,000
+# precincts. Loess lines are generated from all observations. Points are shaded
+# corresponding to density, with darker colors indicating more precincts.
+
+# I am using the sample function to get a random sample from my precinct
+# dataset. I was able to create the loess line using geom_smooth, which does not
+# appear disimilar to the paper's model.
+
+new_precinct <- precinct_data %>% 
+  drop_na()
+
+
+# To prepare my sample using the inner 90% of the data, I use the quatile
+# function inside a mutate just like before, but this time for the hispanic 2000
+# variable.
+
+sample_3 <- sample_n(new_precinct, 2000) %>% 
+  mutate(dprop1611_hispanic_notopcode <= quantile(dprop1611_hispanic_notopcode,.95,na.rm=T) & 
+         dprop1611_hispanic_notopcode >= quantile(dprop1611_hispanic_notopcode,.05,na.rm=T))
+  
+# With every sample ran a different number of non-finite/missing values exists,
+# and a warning sign appears. Because these values are not relevant to the
+# graphic I'm constructing, I will ignore these warnings. 
+
+
+
+fig1c <- sample_3 %>% 
+  ggplot(aes(x = dprop1611_hispanic_notopcode, y = gop_propvote_change)) + 
+  
+  # gop_propvote_change is Change in Prop of Republican Voters 2016-2012
+  # d1600_hispanic is Change in Prop of Hispanic 2000-2016
+  
+  geom_point(alpha = 0.2) +
+  
+  # This use of alpha allows for the density shading where more precincts lie in
+  # the grid.
+  
+  stat_smooth(method = "loess", formula = y ~ x, size = 0.5, color = "green", se = FALSE) +
+  
+  # Method loess is a smoothing method that acts much like a regression, but it
+  # is not linear.
+
+  
+  xlim(0.0, 4.0) +
+  ylim(-0.4,0.4) +
+  
+
+  # This will emphasize the part of the graph that is most dense.
+  
+  labs(title = "C",
+       y = "Change in GOP share, 2012 to 2016",
+       x = "Proportional change in population Hispanic, 2011 to 2016") + 
+  theme_minimal()
+
+# I may need to change the theme to replicate the axis lines format.
+
+fig1c
+
+```
+
+
+```{r fig1d}
+
+# This graphic replicates Fig. 1D from the paper:
+
+# Change in Republican vote share, 2012 to 2016, and Proportional change in
+# population Hispanic, 2000 to 2016. Note: Points are random samples of 2,000
+# precincts. Loess lines are generated from all observations. Points are shaded
+# corresponding to density, with darker colors indicating more precincts.
+
+# I am using the sample function to get a random sample from my precinct
+# dataset. I was able to create the loess line using geom_smooth, which does not
+# appear disimilar to the paper's model.
+
+new_precinct <- precinct_data %>% 
+  drop_na()
+
+
+# To prepare my sample using the inner 90% of the data, I use the quatile
+# function inside a mutate just like before, but this time for the hispanic 2000
+# variable.
+
+sample_4 <- sample_n(new_precinct, 2000) %>% 
+  mutate(dprop1600_hispanic_notopcode <= quantile(dprop1600_hispanic_notopcode,.95,na.rm=T) & 
+         dprop1600_hispanic_notopcode >= quantile(dprop1600_hispanic_notopcode,.05,na.rm=T))
+  
+# With every sample ran a different number of non-finite/missing values exists,
+# and a warning sign appears. Because these values are not relevant to the
+# graphic I'm constructing, I will ignore these warnings. 
+
+
+
+fig1d <- sample_4 %>% 
+  ggplot(aes(x = dprop1600_hispanic_notopcode, y = gop_propvote_change)) + 
+  
+  # gop_propvote_change is Change in Prop of Republican Voters 2016-2012
+  # d1600_hispanic is Change in Prop of Hispanic 2000-2016
+  
+  geom_point(alpha = 0.2) +
+  
+  # This use of alpha allows for the density shading where more precincts lie in
+  # the grid.
+  
+  stat_smooth(method = "loess", formula = y ~ x, size = 0.5, color = "green", se = FALSE) +
+  
+  # Method loess is a smoothing method that acts much like a regression, but it
+  # is not linear.
+
+  
+  xlim(0.0, 4.0) +
+  ylim(-0.4,0.4) +
+  
+
+  # This will emphasize the part of the graph that is most dense.
+  
+  labs(title = "D",
+       y = "Change in GOP share, 2012 to 2016",
+       x = "Proportional change in population Hispanic, 2000 to 2016") + 
+  theme_minimal()
+
+# I may need to change the theme to replicate the axis lines format.
+
+fig1d
+
+```
+
+
+```{r fig1}
+
+# Will potentially figure out how to put them together!
+
+```
+
+
+\newpage
+### Figure 2
+
+I am currently working to replicate figure 2, but I'm at a bit of a crossroads with the original code. Hope to update soon.
+
+\newpage
+# References
